@@ -305,4 +305,191 @@ Spreedly.on('paymentMethod', function(token, pmData) {
 
 });
 
+//checkbox billing
 
+document.addEventListener('DOMContentLoaded', function() {
+    const checkbox = document.getElementById('form-toggle-checkbox');
+    const billingForm = document.getElementById('form-billing-address');
+    const billingFirstName = document.getElementById('billing_first_name');
+    const billingLastName = document.getElementById('billing_last_name');
+    const billingAddress = document.getElementById('billing_address_line1');
+    const billingCity = document.getElementById('billing_city');
+    const billingState = document.getElementById('billing_state');
+    const billingPostcode = document.getElementById('billing_postcode');
+    const shippingFirstName = document.getElementById('id_first_name');
+    const shippingLastName = document.getElementById('id_last_name');
+    const submitButton = document.getElementById('cc-submit-button');
+    const form = document.querySelector('form');
+    const nextURL = '/upsell.html'; // Redirect URL
+
+    // Prevent traditional form submission
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent form submission
+    });
+
+    // Function to toggle the visibility of the billing address form
+    function toggleBillingForm() {
+        if (checkbox.checked) {
+            billingForm.style.display = 'none'; // Hide the billing form
+            removeRequiredFields(); // Remove required attribute from billing fields
+            enableSubmitButton(); // Enable submit button if checkbox is checked
+        } else {
+            billingForm.style.display = 'block'; // Show the billing form
+            setRequiredFields(); // Set billing fields as required
+            validateBillingForm(); // Validate the form and disable button if necessary
+        }
+    }
+
+    // Set billing fields as required
+    function setRequiredFields() {
+        billingFirstName.setAttribute('required', true);
+        billingLastName.setAttribute('required', true);
+        billingAddress.setAttribute('required', true);
+        billingCity.setAttribute('required', true);
+        billingState.setAttribute('required', true);
+        billingPostcode.setAttribute('required', true);
+    }
+
+    // Remove required attribute from billing fields
+    function removeRequiredFields() {
+        billingFirstName.removeAttribute('required');
+        billingLastName.removeAttribute('required');
+        billingAddress.removeAttribute('required');
+        billingCity.removeAttribute('required');
+        billingState.removeAttribute('required');
+        billingPostcode.removeAttribute('required');
+    }
+
+    // Copy "Customer Information" first name and last name to "Billing Address" fields
+    function copyShippingToBilling() {
+        billingFirstName.value = shippingFirstName.value;
+        billingLastName.value = shippingLastName.value;
+    }
+
+    // Function to show error on a field (highlight in red)
+    function showFieldError(field) {
+        field.classList.add('is-invalid');  // Add visual error class
+    }
+
+    // Function to remove error from a field
+    function removeFieldError(field) {
+        field.classList.remove('is-invalid');  // Remove visual error class
+    }
+
+    // Billing form validation function
+    function validateBillingForm() {
+        let isValid = true;
+
+        if (!checkbox.checked) {
+            // if (billingFirstName.value.trim() === '') {
+            //     showFieldError(billingFirstName);
+            //     isValid = false;
+            // } else {
+            //     removeFieldError(billingFirstName);
+            // }
+
+            // if (billingLastName.value.trim() === '') {
+            //     showFieldError(billingLastName);
+            //     isValid = false;
+            // } else {
+            //     removeFieldError(billingLastName);
+            // }
+
+            if (billingAddress.value.trim() === '') {
+                showFieldError(billingAddress);
+                isValid = false;
+            } else {
+                removeFieldError(billingAddress);
+            }
+
+            if (billingCity.value.trim() === '') {
+                showFieldError(billingCity);
+                isValid = false;
+            } else {
+                removeFieldError(billingCity);
+            }
+
+            if (billingState.value.trim() === '') {
+                showFieldError(billingState);
+                isValid = false;
+            } else {
+                removeFieldError(billingState);
+            }
+
+            if (billingPostcode.value.trim() === '') {
+                showFieldError(billingPostcode);
+                isValid = false;
+            } else {
+                removeFieldError(billingPostcode);
+            }
+        }
+
+        // If all fields are valid, enable the submit button, otherwise disable it
+        if (isValid) {
+            enableSubmitButton();
+        } else {
+            disableSubmitButton();
+        }
+
+        return isValid;
+    }
+
+    // Function to enable the submit button
+    function enableSubmitButton() {
+        submitButton.disabled = false;
+    }
+
+    // Function to disable the submit button
+    function disableSubmitButton() {
+        submitButton.disabled = true;
+    }
+
+    // Listener for the submit button
+    submitButton.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default form submission behavior
+
+        // Check if all required fields are filled correctly
+        if (!validateBillingForm()) {
+            disableSubmitButton(); // Disable the button if fields are not filled
+            return; // Stop if validation fails
+        }
+
+        // Tokenize the credit card with Spreedly only if validation passes
+        Spreedly.tokenizeCreditCard({
+            first_name: shippingFirstName.value,
+            last_name: shippingLastName.value,
+            month: document.getElementById('id_expiry_month').value,
+            year: document.getElementById('id_expiry_year').value
+        });
+    });
+
+    // Function to redirect after card tokenization
+    Spreedly.on('paymentMethod', function(token, pmData) {
+        document.getElementById('card_token').value = token;
+
+        // Manually redirect to the upsell page without submitting the form via GET
+        if (validateBillingForm()) {
+            window.location.href = nextURL; // Redirect to upsell.html
+        }
+    });
+
+    // Listener for the checkbox
+    checkbox.addEventListener('change', function() {
+        toggleBillingForm();
+        if (!checkbox.checked) {
+            // If checkbox is unchecked, copy the names from "Customer Information"
+            copyShippingToBilling();
+        }
+    });
+
+    // Listener to update the button state when fields are filled
+    billingFirstName.addEventListener('input', validateBillingForm);
+    billingLastName.addEventListener('input', validateBillingForm);
+    billingAddress.addEventListener('input', validateBillingForm);
+    billingCity.addEventListener('input', validateBillingForm);
+    billingState.addEventListener('input', validateBillingForm);
+    billingPostcode.addEventListener('input', validateBillingForm);
+
+    // Ensure the billing form starts hidden and not required on page load
+    toggleBillingForm();
+});
