@@ -1,7 +1,7 @@
 {
   "name": "example-campaign",
   "version": "1.0.0",
-  "description": "An example of a simple campaign that demostrates the a straight forward integration with the 29next Campaigns App",
+  "description": "An example of a simple campaign that demonstrates a straightforward integration with the 29next Campaigns App",
   "main": "index.html",
   "scripts": {
     "start": "npm run open",
@@ -20,5 +20,8 @@
   "devDependencies": {
     "concurrently": "^8.2.0",
     "http-server": "^14.1.1"
+  },
+  "dependencies": {
+    "http-proxy-middleware": "^3.0.2"
   }
 }

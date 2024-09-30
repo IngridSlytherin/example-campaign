@@ -93,6 +93,12 @@
               </div>
             </div>
           </div>
+          <!-- <div class="form-check mt-4">
+            <input class="form-check-input" type="checkbox" id="checkout-checkbox">
+            <label class="form-check-label" for="checkout-checkbox">
+              Shipping address is the same as billing address
+            </label>
+          </div> -->
           <div id="block--payment_opt1" class="col-12 col-lg-5">
             <form class="form" novalidate="novalidate">
               <input type="hidden" id="card_token" name="card_token" />
@@ -460,6 +466,122 @@
                           Pay with Credit Card
                         </button>
                       </div>
+                      
+                      <div class="form-check mt-4">
+                        <input class="form-check-input" type="checkbox" id="form-toggle-checkbox" checked>
+                        <label class="form-check-label" for="form-toggle-checkbox">
+                          Billing address is the same as shipping address
+                        </label>
+                      </div>
+                      
+                      <!-- Formulário para endereço de cobrança, inicialmente oculto -->
+                      <div id="form-billing-address" class="billing-form" style="display: none;">
+                        <div class="row mb-3 g-2">
+                          <div class="col-sm col-lg-12 col-xl-6">
+                            <div class="form-floating">
+                              <input
+                                type="text"
+                                name="billing_first_name"
+                                maxlength="255"
+                                autocomplete="given-name"
+                                class="form-control"
+                                id="billing_first_name"
+                                placeholder="First Name"
+                              />
+                              <label for="billing_first_name">First Name</label>
+                            </div>
+                            <div class="invalid-message invalid-billing-fname"></div>
+                          </div>
+                          <div class="col-sm col-lg-12 col-xl-6">
+                            <div class="form-floating">
+                              <input
+                                type="text"
+                                name="billing_last_name"
+                                maxlength="255"
+                                autocomplete="family-name"
+                                class="form-control"
+                                id="billing_last_name"
+                                placeholder="Last Name"
+                              />
+                              <label for="billing_last_name">Last Name</label>
+                            </div>
+                            <div class="invalid-message invalid-billing-lname"></div>
+                          </div>
+                          <div class="col-12">
+                            <div class="form-floating">
+                              <input
+                                type="text"
+                                placeholder="Address"
+                                name="billing_address_line1"
+                                maxlength="255"
+                                autocomplete="address-line1"
+                                class="form-control"
+                                id="billing_address_line1"
+                              />
+                              <label for="billing_address_line1">Address</label>
+                            </div>
+                            <div class="invalid-message invalid-billing_address_line1"></div>
+                          </div>
+                          <div class="col-12">
+                            <div class="form-floating">
+                              <input
+                                type="text"
+                                name="billing_city"
+                                maxlength="255"
+                                autocomplete="address-level2"
+                                class="form-control"
+                                id="billing_city"
+                                placeholder="City"
+                              />
+                              <label for="billing_city">City</label>
+                            </div>
+                            <div class="invalid-message invalid-billing_city"></div>
+                          </div>
+                          <div class="col-sm col-lg-12 col-xl-6">
+                            <div class="form-floating">
+                              <select
+                                class="form-select"
+                                name="billing_state"
+                                id="billing_state"
+                                autocomplete="address-level1"
+                              >
+                                <option value="">Select state</option>
+                                <!-- Lista de estados -->
+                                <option value="AL">Alabama</option>
+                                <option value="AK">Alaska</option>
+                              </select>
+                              <label for="billing_state">State</label>
+                            </div>
+                            <div class="invalid-message invalid-billing_state"></div>
+                          </div>
+                          <div class="col-sm col-lg-12 col-xl-6">
+                            <div class="form-floating">
+                              <input
+                                type="text"
+                                placeholder="ZIP"
+                                name="billing_postcode"
+                                maxlength="64"
+                                autocomplete="postal-code"
+                                class="form-control"
+                                id="billing_postcode"
+                              />
+                              <label for="billing_postcode">ZIP</label>
+                            </div>
+                            <div class="invalid-message invalid-billing_postcode"></div>
+                          </div>
+                          <div class="col-12">
+                            <div class="form-floating">
+                              <select class="form-select" name="billing_country" id="billing_country">
+                                <option value="US">United States</option>
+                              </select>
+                              <label for="billing_country">Country</label>
+                            </div>
+                            <div class="invalid-message invalid-billing_country"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- /Formulário para endereço de cobrança, inicialmente oculto -->
+                      
                     </div>
                     <div id="validation-error-block"></div>
                   </div>
@@ -535,6 +657,8 @@
     };
     let selectedOfferId = '2';
   </script>
+
+  <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
   <script src="https://core.spreedly.com/iframe/iframe-v1.min.js"></script>
   <script src="https://unpkg.com/just-validate@4.2.0/dist/just-validate.production.min.js"></script>
   <script type="text/javascript" src="js/campaign.js"></script>

@@ -13841,3 +13841,19 @@ ul.up-list li {
   height: calc(3.5rem + 2px);
   line-height: 1.25;
 }
+
+.form-checkbox {
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Alinha o conteúdo verticalmente */
+  text-align: center;
+  width: 100%; /* Garante que o container ocupe toda a largura disponível */
+}
+
+.form-check-input {
+  margin-right: 10px; /* Espaço entre a checkbox e o texto */
+}
+
+.mt-4 {
+  margin-bottom: 1.5rem;
+}
